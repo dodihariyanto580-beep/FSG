@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dampak Ekonomi | KEK Batang</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .kpi-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div id="dashboard-container" class="min-h-screen">
+
+        <!-- Header Section -->
+        <header class="bg-white shadow-md sticky top-0 z-10">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-blue-600 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-big"><line x1="12" x2="12" y1="20" y2="4"/><path d="M6 20v-7"/><path d="M18 20v-4"/></svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900">Dashboard Dampak Ekonomi KEK Batang</h1>
+                </div>
+                <span class="text-sm font-medium text-gray-500">PT FondFashion Seamless Garment (FSG)</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-6 space-y-6">
+            
+            <!-- Filters Section -->
+            <div class="bg-white p-4 rounded-xl shadow-sm flex flex-col md:flex-row items-center gap-4">
+                <h2 class="text-lg font-semibold text-gray-700">Filter Data:</h2>
+                <div class="flex items-center gap-2">
+                    <label for="year-filter" class="font-medium text-sm">Tahun:</label>
+                    <select id="year-filter" class="w-full md:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2">
+                        <option value="all">Semua Tahun (2026-2031)</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028" selected>2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="scenario-filter" class="font-medium text-sm">Skenario:</label>
+                    <select id="scenario-filter" class="w-full md:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2">
+                        <option value="baseline">Baseline</option>
+                        <option value="optimistic">Optimistic</option>
+                        <option value="conservative">Conservative</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KPI Cards Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Total Investasi (CAPEX) Card -->
+                <div class="kpi-card bg-white p-6 rounded-xl shadow-sm flex items-start justify-between">
+                    <div>
+                        <h3 class="text-base font-medium text-gray-500">Total Investasi (CAPEX)</h3>
+                        <p id="kpi-capex" class="text-3xl font-bold text-gray-900 mt-2">Rp 276.15 M</p>
+                        <p class="text-sm text-gray-400 mt-1">Investasi Awal Proyek</p>
+                    </div>
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-lg">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database-zap"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 9 3 9 3 0 0 0 9-3V5"/><path d="M3 12A9 3 0 0 0 12 15a9 3 0 0 0 9-3"/><path d="M18 16l-4 4h6l-4 4"/></svg>
+                    </div>
+                </div>
+                <!-- Total Tenaga Kerja Card -->
+                <div class="kpi-card bg-white p-6 rounded-xl shadow-sm flex items-start justify-between">
+                    <div>
+                        <h3 class="text-base font-medium text-gray-500">Total Tenaga Kerja</h3>
+                        <p id="kpi-workforce" class="text-3xl font-bold text-gray-900 mt-2">2,500</p>
+                        <p class="text-sm text-gray-400 mt-1">Penyerapan Tenaga Kerja Langsung</p>
+                    </div>
+                     <div class="bg-green-100 text-green-600 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                </div>
+                <!-- Total Nilai Ekspor Card -->
+                <div class="kpi-card bg-white p-6 rounded-xl shadow-sm flex items-start justify-between">
+                    <div>
+                        <h3 class="text-base font-medium text-gray-500">Total Nilai Ekspor</h3>
+                        <p id="kpi-export" class="text-3xl font-bold text-gray-900 mt-2">Rp 155.32 M</p>
+                        <p class="text-sm text-gray-400 mt-1">Pendapatan dari Pasar Global</p>
+                    </div>
+                     <div class="bg-orange-100 text-orange-600 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ship"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.5 0 2.5 2 5 2 1.3 0 1.9-.5 2.5-1"/><path d="M19.38 20.71A10.4 10.4 0 0 1 19 18.26C19 14 18 10 12 2 6 10 5 14 5 18.26a10.4 10.4 0 0 1-.38 2.45"/><path d="M12 2v20"/></svg>
+                    </div>
+                </div>
+                 <!-- Dampak Output Regional Card -->
+                <div class="kpi-card bg-white p-6 rounded-xl shadow-sm flex items-start justify-between">
+                    <div>
+                        <h3 class="text-base font-medium text-gray-500">Dampak Output Regional</h3>
+                        <p id="kpi-multiplier" class="text-3xl font-bold text-gray-900 mt-2">Rp 70.97 M</p>
+                         <p class="text-sm text-gray-400 mt-1">Multiplier Effect Ekonomi Lokal</p>
+                    </div>
+                     <div class="bg-purple-100 text-purple-600 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-recycle"><path d="M7 19H4.92a2 2 0 0 1-1.82-2.78L5 12V9c0-1.1.9-2 2-2h1c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1H7v2l4-3 4 3v-2h-1c-.55 0-1-.45-1-1V9c0-.55.45-1 1-1h1c1.1 0 2 .9 2 2v3l1.9 4.22A2 2 0 0 1 19.08 19H17"/><path d="M5 12h14"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <!-- Main Chart: Area Chart -->
+                <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Tren Dampak Ekonomi Tahunan</h3>
+                    <canvas id="economicTrendChart"></canvas>
+                </div>
+                 <!-- Side Charts: Donut and Bar -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Komposisi Tenaga Kerja</h3>
+                        <canvas id="workforceCompositionChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Nilai Ekspor per Pasar Tujuan</h3>
+                        <canvas id="exportMarketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- DATA SIMULATION ---
+        // This data is a simplified summary based on the provided CSV files.
+        // In a real-world scenario, this would come from an API.
+        const dashboardData = {
+            '2026': {
+                workforce: 1500,
+                exportValue: 94260, // in millions IDR
+                payroll: 54260, // in millions IDR
+                tax: 5887, // in millions IDR, estimated
+                regionalOutput: 40150, // in millions IDR, estimated
+                markets: { US: 27337, EU: 30712, Japan: 15214, ASEAN: 20995 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+            '2027': {
+                workforce: 2000,
+                exportValue: 126300,
+                payroll: 55888,
+                tax: 15490,
+                regionalOutput: 55200,
+                markets: { US: 41006, EU: 30712, Japan: 15214, ASEAN: 39366 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+            '2028': {
+                workforce: 2500,
+                exportValue: 155324,
+                payroll: 57564,
+                tax: 20407,
+                regionalOutput: 70970,
+                markets: { US: 54675, EU: 46068, Japan: 15214, ASEAN: 39366 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+            '2029': {
+                workforce: 2500,
+                exportValue: 166715,
+                payroll: 59291,
+                tax: 23633,
+                regionalOutput: 75810,
+                markets: { US: 54675, EU: 52211, Japan: 15214, ASEAN: 44614 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+            '2030': {
+                workforce: 2500,
+                exportValue: 221906,
+                payroll: 61070,
+                tax: 35383,
+                regionalOutput: 81150,
+                markets: { US: 68343, EU: 76781, Japan: 22821, ASEAN: 53960 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+            '2031': {
+                workforce: 2500,
+                exportValue: 247065,
+                payroll: 62902,
+                tax: 40505,
+                regionalOutput: 86990,
+                markets: { US: 82012, EU: 82923, Japan: 22821, ASEAN: 59307 },
+                workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02]
+            },
+        };
+        
+        const allYearsData = {
+            labels: Object.keys(dashboardData),
+            exportValues: Object.values(dashboardData).map(d => d.exportValue),
+            payrolls: Object.values(dashboardData).map(d => d.payroll),
+            taxes: Object.values(dashboardData).map(d => d.tax),
+        };
+
+        // --- CHART CONFIGURATION ---
+        Chart.defaults.font.family = 'Inter';
+        let trendChart, workforceChart, exportChart;
+
+        const formatCurrency = (value) => {
+            if (value >= 1000000) { // If value is in millions (e.g., 94260 -> 94.26 T)
+                return `Rp ${(value / 1000000).toFixed(2)} T`;
+            }
+            if (value >= 1000) { // if value is in thousands (e.g., 276.15 -> 276.15 M)
+                 return `Rp ${(value / 1000).toFixed(2)} M`;
+            }
+            return `Rp ${value.toFixed(2)} M`;
+        };
+        
+        const formatNumber = (value) => new Intl.NumberFormat('id-ID').format(value);
+
+        // Function to create or update the Economic Trend Area Chart
+        const createTrendChart = () => {
+            const ctx = document.getElementById('economicTrendChart').getContext('2d');
+            const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient1.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
+            gradient1.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+            const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient2.addColorStop(0, 'rgba(16, 185, 129, 0.5)');
+            gradient2.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: allYearsData.labels,
+                    datasets: [
+                        {
+                            label: 'Nilai Ekspor',
+                            data: allYearsData.exportValues,
+                            backgroundColor: gradient1,
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                            tension: 0.4,
+                            fill: true,
+                        },
+                        {
+                            label: 'Gaji Tahunan',
+                            data: allYearsData.payrolls,
+                            backgroundColor: gradient2,
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                            tension: 0.4,
+                            fill: true,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: { callback: value => `${value/1000} M` }
+                        }
+                    },
+                    plugins: { tooltip: { callbacks: { label: (context) => `${context.dataset.label}: Rp ${formatNumber(context.raw * 1000000)}` } } }
+                }
+            });
+        };
+
+        // Function to create or update the Workforce Composition Donut Chart
+        const createWorkforceChart = (data) => {
+            const ctx = document.getElementById('workforceCompositionChart').getContext('2d');
+            const totalWorkforce = data.workforce;
+            const compositionData = data.workforceComposition.map(p => Math.round(p * totalWorkforce));
+            
+            if (workforceChart) workforceChart.destroy();
+            workforceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Operator', 'Staff', 'Supervisor', 'Manager', 'Sr. Manager'],
+                    datasets: [{
+                        data: compositionData,
+                        backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        };
+        
+        // Function to create or update the Export Market Bar Chart
+        const createExportChart = (data) => {
+            const ctx = document.getElementById('exportMarketChart').getContext('2d');
+            if (exportChart) exportChart.destroy();
+            exportChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.markets),
+                    datasets: [{
+                        label: 'Nilai Ekspor (Juta IDR)',
+                        data: Object.values(data.markets),
+                        backgroundColor: '#3B82F6'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (context) => `Rp ${formatNumber(context.raw * 1000000)}` } }
+                    }
+                }
+            });
+        };
+
+        // --- DASHBOARD LOGIC ---
+        const updateDashboard = (year) => {
+            let data;
+            const isAllYears = year === 'all';
+
+            if (isAllYears) {
+                // Aggregate data for all years
+                const totalWorkforce = dashboardData['2031'].workforce;
+                const totalExport = allYearsData.exportValues.reduce((a, b) => a + b, 0);
+                const totalRegionalOutput = Object.values(dashboardData).reduce((sum, d) => sum + d.regionalOutput, 0);
+                
+                document.getElementById('kpi-capex').textContent = `Rp 276.15 M`; // Capex is a one-time investment
+                document.getElementById('kpi-workforce').textContent = formatNumber(totalWorkforce);
+                document.getElementById('kpi-export').textContent = formatCurrency(totalExport);
+                document.getElementById('kpi-multiplier').textContent = formatCurrency(totalRegionalOutput);
+
+                // For 'All Years', charts show data from a representative year, e.g., the latest year
+                const representativeData = dashboardData['2031'];
+                createWorkforceChart(representativeData);
+                createExportChart(representativeData);
+                
+                // Ensure trend chart shows all years
+                trendChart.data.labels = allYearsData.labels;
+                trendChart.data.datasets[0].data = allYearsData.exportValues;
+                trendChart.data.datasets[1].data = allYearsData.payrolls;
+                trendChart.update();
+
+            } else {
+                data = dashboardData[year];
+                if (!data) return;
+
+                document.getElementById('kpi-capex').textContent = `Rp 276.15 M`;
+                document.getElementById('kpi-workforce').textContent = formatNumber(data.workforce);
+                document.getElementById('kpi-export').textContent = formatCurrency(data.exportValue);
+                document.getElementById('kpi-multiplier').textContent = formatCurrency(data.regionalOutput);
+
+                createWorkforceChart(data);
+                createExportChart(data);
+
+                // Filter trend chart to show only up to selected year
+                const yearIndex = allYearsData.labels.indexOf(year);
+                trendChart.data.labels = allYearsData.labels.slice(0, yearIndex + 1);
+                trendChart.data.datasets[0].data = allYearsData.exportValues.slice(0, yearIndex + 1);
+                trendChart.data.datasets[1].data = allYearsData.payrolls.slice(0, yearIndex + 1);
+                trendChart.update();
+            }
+        };
+
+        // --- INITIALIZATION & EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            createTrendChart();
+            const initialYear = document.getElementById('year-filter').value;
+            updateDashboard(initialYear);
+
+            document.getElementById('year-filter').addEventListener('change', (e) => {
+                updateDashboard(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
