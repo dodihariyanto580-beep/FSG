@@ -141,7 +141,7 @@
                     <h3 id="chart-trend-title" class="text-lg font-semibold text-gray-700 mb-4">Tren Dampak Ekonomi Tahunan</h3>
                     <div class="h-96"><canvas id="economicTrendChart"></canvas></div>
                 </div>
-                <div class="lg-col-span-2 space-y-6">
+                <div class="lg:col-span-2 space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm">
                         <h3 id="chart-workforce-title" class="text-lg font-semibold text-gray-700 mb-4">Komposisi Tenaga Kerja</h3>
                         <div class="h-60"><canvas id="workforceCompositionChart"></canvas></div>
@@ -157,13 +157,14 @@
 
     <script>
         // --- DATA SIMULATION ---
+        // Data has been updated based on the new workforce projection
         const baseData = {
-            '2025': { workforce: 0, exportValue: 0, payroll: 0, employeeTax: 0, regionalOutput: 0, markets: { US: 0, EU: 0, Japan: 0, ASEAN: 0 }, workforceComposition: [0,0,0,0,0], capex: 276150000000 },
+            '2025': { workforce: 300, exportValue: 0, payroll: 0, employeeTax: 0, regionalOutput: 0, markets: { US: 0, EU: 0, Japan: 0, ASEAN: 0 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 276150000000 },
             '2026': { workforce: 1500, exportValue: 94259700000, payroll: 54260400000, employeeTax: 1489590000, regionalOutput: 40150000000, markets: { US: 27337500000, EU: 30712500000, Japan: 15214500000, ASEAN: 20995200000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
             '2027': { workforce: 2000, exportValue: 126299250000, payroll: 55888212000, employeeTax: 2125941600, regionalOutput: 55200000000, markets: { US: 41006250000, EU: 30712500000, Japan: 15214500000, ASEAN: 39366000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
-            '2028': { workforce: 2500, exportValue: 155324250000, payroll: 57564862560, employeeTax: 2901323328, regionalOutput: 70970000000, markets: { US: 54675000000, EU: 46068750000, Japan: 15214500000, ASEAN: 39366000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
-            '2029': { workforce: 2800, exportValue: 166715550000, payroll: 66406818800, employeeTax: 3481959221, regionalOutput: 83778817472, markets: { US: 54675000000, EU: 52211250000, Japan: 15214500000, ASEAN: 44614800000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
-            '2030': { workforce: 2800, exportValue: 221906250000, payroll: 68399021600, employeeTax: 3728140667, regionalOutput: 89357881068, markets: { US: 68343750000, EU: 76781250000, Japan: 22821750000, ASEAN: 53960000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
+            '2028': { workforce: 2000, exportValue: 155324250000, payroll: 46051890048, employeeTax: 2321058662, regionalOutput: 56776000000, markets: { US: 54675000000, EU: 46068750000, Japan: 15214500000, ASEAN: 39366000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
+            '2029': { workforce: 2000, exportValue: 166715550000, payroll: 47412465623, employeeTax: 2485718884, regionalOutput: 59818975670, markets: { US: 54675000000, EU: 52211250000, Japan: 15214500000, ASEAN: 44614800000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
+            '2030': { workforce: 2500, exportValue: 221906250000, payroll: 61080326388, employeeTax: 3330129614, regionalOutput: 79796587804, markets: { US: 68343750000, EU: 76781250000, Japan: 22821750000, ASEAN: 53960000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
             '2031': { workforce: 2800, exportValue: 247065000000, payroll: 70450996000, employeeTax: 3989140493, regionalOutput: 95444118892, markets: { US: 82012500000, EU: 82923750000, Japan: 22821750000, ASEAN: 59307000000 }, workforceComposition: [0.70, 0.15, 0.08, 0.05, 0.02], capex: 0 },
         };
 
